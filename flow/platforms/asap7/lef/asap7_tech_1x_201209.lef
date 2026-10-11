@@ -655,20 +655,23 @@ END VIA9Pad
 
 VIA VIA89 Default
   LAYER M8 ;
- RECT -0.02 -0.02 0.02 0.02 ;
+ RECT -0.04 -0.02 0.04 0.02 ;
   LAYER M9 ;
- RECT -0.02 -0.02 0.02 0.02 ;
+ RECT -0.02 -0.04 0.02 0.04 ;
   LAYER V8 ;
  RECT -0.02 -0.02 0.02 0.02 ;
+ # M8 and M9 each enclose V8 by 20 nm along their length (V8.M8.EN.1, V8.M9.EN.2).
 END VIA89
 
 VIA VIA78 Default
   LAYER M7 ;
- RECT -0.016 -0.027 0.016 0.027 ;
+ RECT -0.016 -0.031 0.016 0.031 ;
   LAYER M8 ;
  RECT -0.027 -0.020 0.027 0.020 ;
   LAYER V7 ;
- RECT -0.016 -0.016 0.016 0.016 ;
+ RECT -0.016 -0.020 0.016 0.020 ;
+ # V7 is as wide as the 40 nm M8 across it (DRM V6.M7.AUX.2, which holds for
+ # V7 and M8), and 32 nm along it; M7 encloses it by 11 nm (V7.M7.EN.1).
 END VIA78
 
 VIA VIA67 Default
