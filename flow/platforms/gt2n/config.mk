@@ -64,9 +64,19 @@ export DONT_USE_CELLS = $(foreach wvt,$(ALL_WVT), \
                           gt2_6t_tiehigh_$(wvt) \
                           gt2_6t_tielow_$(wvt))
 
+# The one-pitch cells (filler, backside tap) draw their ACT across the whole
+# 42 nm cell. The 13 nm and 31 nm sheets draw ACT at different heights
+# (y 35-48 vs 26-57 nm), so a 31 nm one-pitch cell between 13 nm cells stands
+# 9 nm proud of them, above and below, in pieces 42 nm wide: under ACT.2's
+# 84 nm minimum width. A 13 nm one-pitch cell is clean beside either sheet, so
+# whenever w13 is loaded the one-pitch cells come from it. The decap is two
+# pitches wide, 84 nm at the limit, and clean from either sheet.
+ONE_PITCH_W = $(if $(filter w13,$(GT2N_USE_W)),w13,$(PRIMARY_W))
+
 # Fill cells used in fill cell insertion.
-export FILL_CELLS ?= $(foreach wvt,$(ALL_WVT), \
-                       gt2_6t_filler_$(wvt) \
+export FILL_CELLS ?= $(foreach vt,$(GT2N_USE_VT), \
+                       gt2_6t_filler_$(ONE_PITCH_W)_$(vt)) \
+                     $(foreach wvt,$(ALL_WVT), \
                        gt2_6t_decapcc_$(wvt))
 
 #-----------------------------------------------------
@@ -103,8 +113,9 @@ export PDN_TCL ?= $(PLATFORM_DIR)/pdn.tcl
 # Endcap and Welltie cells
 export TAPCELL_TCL ?= $(PLATFORM_DIR)/tapcell.tcl
 # The PDN here is backside-only, so pick the backside-PDN tap variant
-# (BPR pins only, half-width, no M1 shapes).
-export TAP_CELL_NAME = gt2_6t_tapbspdn_$(PRIMARY_WVT)
+# (BPR pins only, half-width, no M1 shapes). It is one pitch wide, so it comes
+# from ONE_PITCH_W, as the fillers do.
+export TAP_CELL_NAME = gt2_6t_tapbspdn_$(ONE_PITCH_W)_$(PRIMARY_VT)
 
 export RTLMP_MIN_CHANNEL_SIZE ?= 2.0 2.0
 
