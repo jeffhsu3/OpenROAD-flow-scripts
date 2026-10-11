@@ -64,6 +64,11 @@ log_cmd syn::stats
 
 log_cmd synthesize
 
+# synthesize creates the block with DEF UNITS 100, coarser than the tech
+# LEF's database units on platforms such as asap7 (1000). Every later
+# write_def would then round geometry to that grid, so match the tech.
+[ord::get_db_block] setDefUnits [[ord::get_db_tech] getDbUnitsPerMicron]
+
 log_cmd read_sdc $::env(SDC_FILE)
 log_cmd repair_design -pre_placement
 
